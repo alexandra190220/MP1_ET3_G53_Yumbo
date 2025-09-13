@@ -10,7 +10,7 @@
     "preview": "preview --port $PORT --host"
   },
   "devDependencies": {
-    "vite": "^7.1.2"
+    "vite": "^7.1.5"
   },
   "dependencies": {
     "cors": "^2.8.5",
