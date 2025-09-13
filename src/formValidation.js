@@ -1,10 +1,11 @@
+// formValidation.js - Validaciones de formulario
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('registerForm');
   const passwordInput = form.password;
   const confirmPasswordInput = form.confirmPassword;
   const ageInput = form.age;
 
-  // Crear o usar <small> debajo de cada campo para errores
+  // Función para crear o reutilizar <small> debajo de cada input
   const createError = (input) => {
     let small = input.parentElement.querySelector('small');
     if (!small) {
@@ -52,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Ejecuta la misma validación final
     const fields = ['firstName', 'lastName', 'email', 'password', 'confirmPassword'];
     let valid = true;
 
@@ -77,39 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!passwordRegex.test(password)) valid = false;
     if (password !== confirmPassword) valid = false;
 
-    if (valid) {
-      // Construir objeto de datos con firstName y lastName
-      const userData = {
-        firstName: form.firstName.value.trim(),
-        lastName: form.lastName.value.trim(),
-        email: form.email.value.trim(),
-        password: form.password.value.trim(),
-        age: parseInt(form.age.value)
-      };
-
-      // Enviar al backend
-      fetch("http://localhost:8080/api/v1/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData)
-      })
-        .then(async (res) => {
-          const data = await res.json();
-          if (res.ok) {
-            alert("✅ Registro exitoso. Ahora inicia sesión.");
-            window.location.href = "sign_in.html"; // Redirigir al login
-          } else {
-            alert("❌ Error: " + (data.error || "No se pudo registrar"));
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("⚠️ Error de conexión con el servidor.");
-        });
-
-    } else {
+    if (!valid) {
       alert('❌ Corrige los errores antes de enviar.');
     }
-
   });
 });
